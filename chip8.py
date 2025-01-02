@@ -27,6 +27,30 @@ class Chip8:
         self.waiting_for_key = False  # Flag for key input operations
         self.key_register = 0  # Register waiting for key input
 
+        # Keymap
+        self.keymap = {
+            pygame.K_1: 0x01,
+            pygame.K_2: 0x02,
+            pygame.K_3: 0x03,
+            pygame.K_4: 0x0C,
+            pygame.K_q: 0x04,
+            pygame.K_w: 0x05,
+            pygame.K_e: 0x06,
+            pygame.K_r: 0x0D,
+            pygame.K_a: 0x07,
+            pygame.K_s: 0x08,
+            pygame.K_d: 0x09,
+            pygame.K_f: 0x0E,
+            pygame.K_z: 0x0A,
+            pygame.K_x: 0x00,
+            pygame.K_c: 0x0B,
+            pygame.K_v: 0x0F
+        }
+
+        # Initialize sound
+        pygame.mixer.init()
+        self.beep_sound = pygame.mixer.Sound('beep.wav')
+
         # Initialize system
         self.load_fontset()
 
@@ -82,7 +106,7 @@ class Chip8:
             self.delay_timer -= 1
         if self.sound_timer > 0:
             if self.sound_timer == 1:
-                print("BEEP!")  # Sound implementation
+                self.beep_sound.play()  # Play sound
             self.sound_timer -= 1
 
     def execute_opcode(self, opcode):
@@ -245,3 +269,16 @@ class Chip8:
                 for i in range(x + 1):
                     self.V[i] = self.memory[self.I + i]
                 self.pc += 2
+
+    def handle_input(self):
+        """Handle keyboard input"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                if event.key in self.keymap:
+                    self.keypad[self.keymap[event.key]] = 1
+            elif event.type == pygame.KEYUP:
+                if event.key in self.keymap:
+                    self.keypad[self.keymap[event.key]] = 0
+        return True

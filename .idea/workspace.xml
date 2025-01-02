@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da56f59c-eaf8-4675-b2e6-d4c5f3268322" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Roms/INVADERS" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Roms/PONG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Chip-8.py" beforeDir="false" afterPath="$PROJECT_DIR$/chip8.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Roms/Space Invaders [David Winter].ch8" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chip8.py" beforeDir="false" afterPath="$PROJECT_DIR$/chip8.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
