@@ -16,7 +16,7 @@ def main():
     pygame.display.set_caption("Chip-8 Emulator")
     clock = pygame.time.Clock()
     chip8 = Chip8()
-    chip8.load_rom('Roms/INVADERS')
+    chip8.load_rom('Roms/PONG')
 
     running = True
     while running:
