@@ -13,9 +13,6 @@ class EmulatorGUI:
         self.root = tk.Tk()
         self.root.title("CHIP-8 Emulator")
 
-        # Set up window close handler
-        self.root.protocol("WM_DELETE_WINDOW", self.quit_emulator)
-
         # Initialize Pygame
         pygame.init()
         self.screen = pygame.display.set_mode((640, 320))
@@ -97,12 +94,7 @@ class EmulatorGUI:
         while self.running:
             if self.rom_loaded and not self.paused:
                 # Handle Pygame events
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.quit_emulator()
-                        return
-                    # Handle other Pygame events using the existing input handler
-                    self.chip8.handle_input()
+                self.chip8.handle_input()
 
                 # Emulate multiple cycles per frame
                 for _ in range(10):
@@ -117,11 +109,6 @@ class EmulatorGUI:
 
                 self.clock.tick(60)
             else:
-                # Handle Pygame events even when paused to allow window closing
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.quit_emulator()
-                        return
                 time.sleep(0.016)  # Sleep to prevent high CPU usage when paused
 
     def toggle_pause(self):
@@ -164,18 +151,12 @@ class EmulatorGUI:
         self.running = False
         pygame.quit()
         self.root.quit()
-        self.root.destroy()
 
     def run(self):
-        try:
-            while True:
-                self.root.update()
-                if not self.running:
-                    break
-        except tk.TclError:
-            # Handle case when window is closed
-            self.running = False
-            pygame.quit()
+        while True:
+            self.root.update()
+            if not self.running:
+                break
 
 
 def main():
