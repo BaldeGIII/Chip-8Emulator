@@ -39,6 +39,7 @@ class EmulatorGUI:
         # Start emulation thread
         self.emu_thread = threading.Thread(target=self.emulation_loop, daemon=True)
         self.emu_thread.start()
+        self.display_surface = pygame.Surface((64, 32))
 
     def create_menu(self):
         menubar = tk.Menu(self.root)
@@ -85,28 +86,32 @@ class EmulatorGUI:
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to load ROM: {str(e)}")
 
+
+
     def draw_display(self):
-        pixel_array = pygame.PixelArray(self.screen)
+        # Update small display surface
         for y in range(32):
             for x in range(64):
-                color = (255, 255, 255) if self.chip8.display[y * 64 + x] == 1 else (0, 0, 0)
-                pixel_array[x * 10:(x + 1) * 10, y * 10:(y + 1) * 10] = color
-        del pixel_array
+                color = 0xFFFFFF if self.chip8.display[y * 64 + x] == 1 else 0x000000
+                self.display_surface.set_at((x, y), color)
+        # Scale to window size
+        scaled_surface = pygame.transform.scale(self.display_surface, (640, 320))
+        self.screen.blit(scaled_surface, (0, 0))
 
     def emulation_loop(self):
         while self.running:
-            if self.rom_loaded and not self.paused:
-                # Handle Pygame events
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.quit_emulator()
-                        return
-                    # Handle other Pygame events using the existing input handler
-                    self.chip8.handle_input()
+            # Handle input and check for quit
+            if not self.chip8.handle_input():
+                self.quit_emulator()
+                return
 
+            if self.rom_loaded and not self.paused:
                 # Emulate multiple cycles per frame
                 for _ in range(10):
                     self.chip8.emulate_cycle()
+
+                # Update timers once per frame
+                self.chip8.update_timers()
 
                 # Update display if needed
                 if self.chip8.draw_flag:
@@ -117,12 +122,7 @@ class EmulatorGUI:
 
                 self.clock.tick(60)
             else:
-                # Handle Pygame events even when paused to allow window closing
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.quit_emulator()
-                        return
-                time.sleep(0.016)  # Sleep to prevent high CPU usage when paused
+                time.sleep(0.016)
 
     def toggle_pause(self):
         self.paused = not self.paused
