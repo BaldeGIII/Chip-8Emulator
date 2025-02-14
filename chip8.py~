@@ -104,7 +104,7 @@ class Chip8:
         """Update timers at 60Hz."""
         if self.delay_timer > 0:
             self.delay_timer -= 1
-         if self.sound_timer > 0:
+        if self.sound_timer > 0:
             if self.sound_timer == 1:
                 self.beep_sound.play()
             self.sound_timer -= 1
