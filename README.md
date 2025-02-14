@@ -34,7 +34,7 @@ This is a Chip-8 emulator written in Python using Pygame.
 4. **Install the required dependencies:**
 
     ```sh
-    pip install -r requirements.txt
+    pip install tkinter pygame
     ```
 
 ## Running the Emulator
